@@ -1,4 +1,4 @@
-from scapy.all import sniff, IP, TCP, UDP, ICMP, ARP, DNS, Raw # Import Scapy modules to 
+from scapy.all import sniff, IP, TCP, UDP, ICMP, ARP, DNS, Raw # Import Scapy functions for different types of packets
 from datetime import datetime # Import datetime for timestamping packets
 
 LOG_FILE = "captured_packets.log" # Log file to store the captured pacekt details
@@ -40,13 +40,6 @@ def packet_callback(packet):
     with open(LOG_FILE, "a") as log_file:
         log_file.write(log_entry + "\n")
         
-# Sniff packets
-print("Starting network sniffer.....Press Ctrl+C to stop.")
-try: 
-    sniff(prn=packet_callback, store="False")
-except KeyboardInterrupt: 
-    print("\nSniffing stopped. Check the log_file: ", LOG_FILE)
-
 
 
 # Start sniffing network packets
@@ -54,5 +47,9 @@ print("Starting network sniffer.... Press Ctrl+C to stop.")
 try:
     sniff(prn=packet_callback, store="False")  # Capture packets and call packet_callback for each one
 except KeyboardInterrupt: # Used to stop the network sniffer
-    print("\nSniffing stopped. Saving captured packets to file....")
+    print("\nSniffing stopped. Saving captured packets to log file- ", LOG_FILE)
+except Exception as e: 
+    print("\nAn error occurred: {e}")
+finally:
+    print("Exiting network sniffer.")
 
